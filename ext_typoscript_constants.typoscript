@@ -1,0 +1,11 @@
+# cat=sicmosparo//0010; type=text; label= Public Key of your mosparo project
+plugin.tx_sicmosparo.publickey =
+
+# cat=sicmosparo//0020; type=text; label= Private Key of your mosparo project
+plugin.tx_sicmosparo.privatekey =
+
+# cat=sicmosparo//0030; type=text; label= Uid of your mosparo project
+plugin.tx_sicmosparo.uid =
+
+# cat=sicmosparo//0040; type=text; label= Host of your mosparo installation
+plugin.tx_sicmosparo.host = https://yourinstance.example.com

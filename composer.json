@@ -1,0 +1,36 @@
+{
+	"name": "sicor/sic-mosparo",
+	"type": "typo3-cms-extension",
+	"description": "Mosparo captcha extension for powermail",
+	"minimum-stability": "stable",
+	"license": "GPL-3.0-or-later",
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "http://composer.typo3.org/"
+		}
+	],
+	"require": {
+		"typo3/cms-core": "^11.5 || ^12.4 || ^13.4",
+		"powermail": "^8"
+		"php": "^8"
+	},
+	"authors":
+	[
+		{
+			"name": "SICOR DEVTEAM",
+			"email": "dev@sicor-kdl.net",
+			"role": "Developer"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"SICOR\\SicMosparo\\": "Classes"
+		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "sic_mosparo"
+		}
+	}
+}
