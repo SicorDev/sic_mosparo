@@ -1,52 +1,73 @@
-<div class="powermail_fieldwrap powermail_fieldwrap_type_mosparo powermail_fieldwrap_{field.marker} {field.css} {settings.styles.framework.fieldAndLabelWrappingClasses}" xmlns:f="http://www.w3.org/1999/XSL/Transform">
-	<label class="{settings.styles.framework.labelClasses}" title="{field.description}">
-		<vh:string.escapeLabels>{field.title}</vh:string.escapeLabels><span class="mandatory">*</span>
-	</label>
+<div class="powermail_fieldwrap powermail_fieldwrap_type_mosparo powermail_fieldwrap_{field.marker} {field.css} {settings.styles.framework.fieldAndLabelWrappingClasses}"
+     xmlns:f="http://www.w3.org/1999/XSL/Transform">
+    <label class="{settings.styles.framework.labelClasses}" title="{field.description}">
+        <vh:string.escapeLabels>{field.title}</vh:string.escapeLabels>
+        <span class="mandatory">*</span>
+    </label>
+    <div class="{settings.styles.framework.fieldWrappingClasses}">
+        <f:if condition="{settings.mosparo.host} == 'https://yourinstance.example.com'">
+            <f:then>
+                <p>
+                    Please setup your mosparo instance in the typoscript settings.
+                </p>
+            </f:then>
+            <f:else>
+                <script src="<f:format.raw>{settings.mosparo.host}</f:format.raw>/build/mosparo-frontend.js"
+                        defer></script>
+                <script type="text/javascript">
+                    const host = '<f:format.raw>{settings.mosparo.host}</f:format.raw>'
+                    const uid = '<f:format.raw>{settings.mosparo.uid}</f:format.raw>'
+                    const publickey = '<f:format.raw>{settings.mosparo.publickey}</f:format.raw>'
+                    let mosparoInstance = undefined
 
-	<div class="{settings.styles.framework.fieldWrappingClasses}">
-		<f:if condition="{settings.mosparo.host} == 'https://yourinstance.example.com'">
-			<f:then>
-				<p>
-					Please setup your mosparo instance in the typoscript settings.
-				</p>
-			</f:then>
-			<f:else>
-				<script src="<f:format.raw>{settings.mosparo.host}</f:format.raw>/build/mosparo-frontend.js" defer></script>
-				<script type="text/javascript" defer>
-					const host = '<f:format.raw>{settings.mosparo.host}</f:format.raw>'
-					const uid = '<f:format.raw>{settings.mosparo.uid}</f:format.raw>'
-					const publickey = '<f:format.raw>{settings.mosparo.publickey}</f:format.raw>'
+                    const loadMosparo = () => {
+                        if (typeof mosparoInstance !== 'undefined') return
+                        if (typeof mosparo === 'undefined') return
 
-					let mosparoInstance = undefined
-					const loadMosparo = () => {
-						if (typeof mosparoInstance === 'undefined') {
-							mosparoInstance = new mosparo(
-									'submit-box',
-									host,
-									uid,
-									publickey,
-									{
-										loadCssResource: true,
-										onGetFormData: (form, data) => {
-											// Currently mosparo does not support brackets in field names, we also remove the powermail field prefix
-											for(const key in data['fields']) {
-												data['fields'][key].name = data['fields'][key].name.replace('tx_powermail_pi1[field]', '');
-												data['fields'][key].name = data['fields'][key].name.replace(']', '');
-												data['fields'][key].name = data['fields'][key].name.replace('[', '');
-											}
+                        mosparoInstance = new mosparo(
+                            'submit-box',
+                            host,
+                            uid,
+                            publickey,
+                            {
+                                loadCssResource: true,
+                                onGetFormData: (form, data) => {
+                                    for (const key in data['fields']) {
+                                        data['fields'][key].name = data['fields'][key].name.replace('tx_powermail_pi1[field]', '')
+                                        data['fields'][key].name = data['fields'][key].name.replace(']', '')
+                                        data['fields'][key].name = data['fields'][key].name.replace('[', '')
+                                    }
+                                    return data
+                                },
+                            }
+                        )
+                    }
 
-											return data;
-										},
-									}
-							)
-						}
-					}
+                    const observer = new MutationObserver(() => {
+                        if (typeof mosparo !== 'undefined') {
+                            loadMosparo()
+                            observer.disconnect()
+                        }
+                    })
 
-					document.addEventListener("DOMContentLoaded", loadMosparo)
-					window.onload = loadMosparo
-				</script>
-				<div id="submit-box"></div>
-			</f:else>
-		</f:if>
-	</div>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        if (typeof mosparo !== 'undefined') {
+                            loadMosparo()
+                        } else {
+                            observer.observe(document, {childList: true, subtree: true})
+
+                            const poller = setInterval(() => {
+                                if (typeof mosparo !== 'undefined') {
+                                    loadMosparo()
+                                    clearInterval(poller)
+                                    observer.disconnect()
+                                }
+                            }, 200)
+                        }
+                    })
+                </script>
+                <div id="submit-box"></div>
+            </f:else>
+        </f:if>
+    </div>
 </div>
