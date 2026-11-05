@@ -1,0 +1,25 @@
+categories:
+  sicmosparo:
+    label: Mosparo Captcha
+
+settings:
+  plugin.tx_sicmosparo.publickey:
+    default: ''
+    type: text
+    label: Public Key of your mosparo project
+    category: sicmosparo
+  plugin.tx_sicmosparo.privatekey:
+    default: ''
+    type: text
+    label: Private Key of your mosparo project
+    category: sicmosparo
+  plugin.tx_sicmosparo.uid:
+    default: ''
+    type: text
+    label: Uid of your mosparo project
+    category: sicmosparo
+  plugin.tx_sicmosparo.host:
+    default: 'https://yourinstance.example.com'
+    type: text
+    label: Host of your mosparo installation
+    category: sicmosparo

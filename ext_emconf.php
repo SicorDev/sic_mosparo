@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = array(
     'title' => 'SPAM Prevention with Mosparo for Powermail',
     'description' => 'Mosparo captcha extension for powermail',
     'category' => 'plugin',
-    'version' => '1.0.3',
+    'version' => '2.0.0',
     'state' => 'stable',
     'uploadfolder' => false,
     'clearcacheonload' => false,
@@ -23,9 +23,9 @@ $EM_CONF[$_EXTKEY] = array(
     'author_company' => 'SICOR IT GmbH',
     'constraints' => [
         'depends' => [
-            'powermail' => '8.0.0-',
-            'typo3' => '11.0.0-13.9.99',
-            'php' => '8.0.0-',
+            'powermail' => '13.0.0-14.9.99',
+            'typo3' => '13.0.0-14.9.99',
+            'php' => '8.2.0-8.5.99',
         ],
     ],
 );
